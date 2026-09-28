@@ -1,0 +1,16 @@
+nombre,apellido,posicion,altura,id_equipo
+Lucas,Romero,Base,1.75,1
+Tomás,Benítez,Base,1.78,2
+Matías,Aguirre,Escolta,1.84,3
+Nicolás,Sosa,Escolta,1.84,1
+Julián,Herrera,Alero,1.88,2
+Santiago,Molina,Alero,1.90,3
+Franco,Castro,Alero,1.88,1
+Bruno,Ledesma,Ala-Pívot,1.95,2
+Agustín,Ríos,Ala-Pívot,1.93,3
+Ignacio,Peralta,Ala-Pívot,1.95,1
+Martín,Acosta,Pívot,2.05,2
+Gonzalo,Vega,Pívot,2.01,3
+Emiliano,Suárez,Pívot,2.08,1
+Joaquín,Navarro,Base,1.72,3
+Federico,Domínguez,Escolta,1.84,2

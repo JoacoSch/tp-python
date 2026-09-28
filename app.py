@@ -4,6 +4,7 @@ from database import (
     obtener_equipos, crear_equipo, actualizar_equipo, eliminar_equipo,
     obtener_jugadores, crear_jugador, actualizar_jugador, eliminar_jugador,
     obtener_estadios, crear_estadio, actualizar_estadio, eliminar_estadio,
+    importar_jugadores_csv, obtener_jugadores_df,
 )
 
 POSICIONES = ["Base", "Escolta", "Alero", "Ala-Pívot", "Pívot"]
@@ -18,7 +19,7 @@ st.caption("ORT Basketball Association — Sistema de Gestión de Liga")
 
 seccion = st.sidebar.radio(
     "Navegación",
-    ["Jugadores", "Equipos", "Estadios"],
+    ["Jugadores", "Equipos", "Estadios", "Estadísticas"],
     index=0,
 )
 
@@ -53,6 +54,11 @@ if seccion == "Jugadores":
         st.dataframe(data, use_container_width=True)
     else:
         st.info("No hay jugadores registrados.")
+
+    if st.button("📥 Importar jugadores desde jugadores.csv"):
+        cargados = importar_jugadores_csv()
+        st.success(f"Se cargaron {cargados} jugadores nuevos.")
+        st.rerun()
 
     st.divider()
 
@@ -320,3 +326,33 @@ elif seccion == "Estadios":
                 eliminar_estadio(estadio_del.id)
                 st.success("Estadio eliminado correctamente.")
                 st.rerun()
+
+# ─────────────────────────────────────────────
+# ESTADÍSTICAS
+# ─────────────────────────────────────────────
+elif seccion == "Estadísticas":
+    st.header("Estadísticas de altura de los jugadores")
+
+    df = obtener_jugadores_df()
+
+    if df.empty:
+        st.info("No hay jugadores registrados.")
+    else:
+        media = df["altura"].mean()
+        mediana = df["altura"].median()
+        moda = df["altura"].mode()[0]
+
+        st.write(f"Media: {media:.2f} m")
+        st.write(f"Mediana: {mediana:.2f} m")
+        st.write(f"Moda: {moda:.2f} m")
+
+        st.subheader("Interpretación")
+        if abs(media - mediana) < 0.03:
+            st.write("La media y la mediana son muy parecidas, así que las alturas están bastante parejas y no hay jugadores extremos que muevan el promedio.")
+        else:
+            st.write("La media y la mediana son distintas, así que hay jugadores muy altos o muy bajos que mueven el promedio.")
+        repeticiones = int((df["altura"] == moda).sum())
+        if repeticiones > 1:
+            st.write(f"La moda es {moda:.2f} m y se repite en {repeticiones} jugadores, por lo que es la altura más común.")
+        else:
+            st.write("No hay una moda clara porque las alturas están muy repartidas.")

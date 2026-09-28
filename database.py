@@ -1,7 +1,9 @@
 import sqlite3
+import pandas as pd
 from models import Equipo, Jugador, Estadio
 
 DB_PATH = "liga_basquet.db"
+CSV_JUGADORES = "jugadores.csv"
 
 # --- Queries ---
 query_create_equipo = "INSERT INTO equipos (nombre, ciudad, entrenador) VALUES (?, ?, ?)"
@@ -109,6 +111,25 @@ def eliminar_jugador(id):
     con.execute(query_delete_jugador, (id,))
     con.commit()
     con.close()
+
+
+def importar_jugadores_csv(ruta=CSV_JUGADORES):
+    df = pd.read_csv(ruta)
+    existentes = [(j.nombre, j.apellido) for j in obtener_jugadores()]
+    cargados = 0
+    for _, fila in df.iterrows():
+        if (fila["nombre"], fila["apellido"]) in existentes:
+            continue
+        crear_jugador(fila["nombre"], fila["apellido"], fila["posicion"], float(fila["altura"]), int(fila["id_equipo"]))
+        cargados += 1
+    return cargados
+
+
+def obtener_jugadores_df():
+    con = get_connection()
+    df = pd.read_sql(query_read_jugadores_con_equipo, con)
+    con.close()
+    return df
 
 
 # --- CRUD Estadios ---

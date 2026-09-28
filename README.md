@@ -15,6 +15,7 @@ tp-python/
 ├── app.py          # Interfaz Streamlit (punto de entrada)
 ├── database.py     # Capa de datos: conexión a SQLite y CRUD
 ├── models.py       # Clases Python: Equipo, Jugador, Estadio
+├── jugadores.csv   # Dataset propio (15 jugadores) para importar
 ├── sqlite.py       # Script de inicialización de la base de datos
 └── liga_basquet.db # Base de datos SQLite (se crea automáticamente)
 ```
@@ -23,7 +24,7 @@ tp-python/
 
 1. Instalar dependencias:
    ```bash
-   pip install streamlit
+   pip install streamlit pandas
    ```
 
 2. Iniciar la aplicación:
@@ -66,6 +67,12 @@ La app se divide en tres secciones accesibles desde el menú lateral:
 - Filtro mediante checkbox para mostrar solo estadios aptos para finales.
 - Tabs para **agregar**, **modificar** y **eliminar** estadios.
 - Validaciones: el nombre no puede estar vacío y la capacidad debe ser mayor a cero.
+
+### Estadísticas
+
+- Lee los jugadores con `pandas.read_sql` y calcula **media, mediana y moda** de la altura.
+- Muestra los tres valores rotulados y un párrafo que interpreta los resultados.
+- Los datos se cargan con el botón **Importar jugadores desde jugadores.csv** de la sección Jugadores (usa `pandas.read_csv` y `crear_jugador` fila por fila; omite los que ya existen).
 
 ## Arquitectura
 
